@@ -28,7 +28,7 @@ connectionProperties = {
   "driver" : "com.microsoft.sqlserver.jdbc.SQLServerDriver"
 }
 
-df.write.jdbc(url=jdbcUrl, table="vehicledata", mode="overwrite", properties=connectionProperties)
+#df.write.jdbc(url=jdbcUrl, table="vehicledata", mode="overwrite", properties=connectionProperties)
 
 
 vehicle_type_table = spark.read.jdbc(jdbcUrl, "vehicledata", connectionProperties)
