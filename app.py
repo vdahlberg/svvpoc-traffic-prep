@@ -32,7 +32,8 @@ connectionProperties = {
 
 
 vehicle_type_table = spark.read.jdbc(url=jdbcUrl, table="trafikkdata", properties=connectionProperties)
-display(vehicle_type_table.select('vehicle_type_quality', 'vehicle_type').groupBy('vehicle_type').avg('vehicle_type_quality'))
+test=vehicle_type_table.select('vehicle_type_quality', 'vehicle_type').groupBy('vehicle_type').avg('vehicle_type_quality')
+display(test)
 
 spark.stop()
 
