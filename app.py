@@ -33,7 +33,7 @@ df.write.jdbc(url=jdbcUrl, table="trafiktestdata", mode="overwrite", properties=
 
 #vehicle_type_table = spark.read.jdbc(url=jdbcUrl, table="trafikkdata", properties=connectionProperties)
 #test=vehicle_type_table.select('vehicle_type_quality', 'vehicle_type').groupBy('vehicle_type').avg('vehicle_type_quality')
-test.show()
+#test.show()
 
 spark.stop()
 
