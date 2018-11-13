@@ -28,11 +28,11 @@ connectionProperties = {
   "driver" : "com.microsoft.sqlserver.jdbc.SQLServerDriver"
 }
 
-#df.write.jdbc(url=jdbcUrl, table="vehicledata", mode="overwrite", properties=connectionProperties)
+df.write.jdbc(url=jdbcUrl, table="trafiktestdata", mode="overwrite", properties=connectionProperties)
 
 
-vehicle_type_table = spark.read.jdbc(url=jdbcUrl, table="trafikkdata", properties=connectionProperties)
-test=vehicle_type_table.select('vehicle_type_quality', 'vehicle_type').groupBy('vehicle_type').avg('vehicle_type_quality')
+#vehicle_type_table = spark.read.jdbc(url=jdbcUrl, table="trafikkdata", properties=connectionProperties)
+#test=vehicle_type_table.select('vehicle_type_quality', 'vehicle_type').groupBy('vehicle_type').avg('vehicle_type_quality')
 test.show()
 
 spark.stop()
