@@ -4,8 +4,8 @@ from pyspark.sql import SparkSession
 #from pyspark.sql.functions import mean, col
 
 storage_account_name = "svvpocdlgen2"
-storage_account_access_key = environ.get("AZURE_STORAGE_ACCESS_KEY")
-
+storage_account_access_key = environ.get("AZURE_STORAGE_ACCESS_KEY").strip()
+print storage_account_access_key
 
 spark = SparkSession.builder.appName('wrangler').config("spark.hadoop.fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.azure.account.key."+storage_account_name+".blob.core.windows.net", storage_account_access_key).getOrCreate()
 			
@@ -15,11 +15,11 @@ file_location = "abfss://testshare/"
 df = spark.read.format("csv").options(header='true',inferschema='true',sep=";").load("wasbs://testshare@svvpocdlgen2.blob.core.windows.net/1900116_20180306000000-20180331235900.csv")
 #df_mean = df.select(mean(col('vehicle_type_quality'))).collect()
 
-jdbcHostname = environ.get("AZURE_SQL_HOST");
+jdbcHostname = environ.get("AZURE_SQL_HOST")
 jdbcDatabase = environ.get("AZURE_SQL_DB")
 jdbcPort = environ.get("AZURE_SQL_PORT")
 username = environ.get("AZURE_SQL_UNAME")
-password = environ.get("AZURE_SQL_PASSWD")
+password = environ.get("AZURE_SQL_PASSWD").strip()
 
 jdbcUrl = "jdbc:sqlserver://{0}:{1};database={2}".format(jdbcHostname, jdbcPort, jdbcDatabase)
 connectionProperties = {
