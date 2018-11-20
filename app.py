@@ -5,7 +5,7 @@ from pyspark.sql import SparkSession
 
 storage_account_name = "svvpocdlgen2"
 storage_account_access_key = environ.get("AZURE_STORAGE_ACCESS_KEY").strip()
-print(storage_account_access_key)
+# a comment
 
 spark = SparkSession.builder.appName('wrangler').config("spark.hadoop.fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.azure.account.key."+storage_account_name+".blob.core.windows.net", storage_account_access_key).getOrCreate()
 			
