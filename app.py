@@ -38,7 +38,7 @@ for p in processed:
 # Create spark
 from pyspark.sql import SparkSession
 
-spark = SparkSession.builder.appName('notebook-read-multiple-test').config("spark.hadoop.fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.azure.account.key."+storage_account_name+".blob.core.windows.net", storage_account_access_key).master('spark://nbcluster:7077').getOrCreate()
+spark = SparkSession.builder.appName('traffic-prep-wrangler').config("spark.hadoop.fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem").config("fs.azure.account.key."+storage_account_name+".blob.core.windows.net", storage_account_access_key).master('spark://nbcluster:7077').getOrCreate()
 
 
 # DB Setup
@@ -62,10 +62,10 @@ for file in filenames:
     df = spark.read.format("csv").options(header='true',inferschema='true',sep=";").load("wasbs://trafikkdatavictortest@svvpocdlgen2.blob.core.windows.net/" + file)
     print(file + " has " + str(df.count()) + " rows.")
     
-	# write to db
-	df.write.jdbc(url=jdbcUrl, table="trafiktestdata", mode="append", properties=connectionProperties)
+    # write to db
+    df.write.jdbc(url=jdbcUrl, table="trafiktestdata", mode="append", properties=connectionProperties)
     
-	filenamesToUpdate.append("processed_" + file)
+    filenamesToUpdate.append("processed_" + file)
 
 
 
