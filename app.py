@@ -61,7 +61,6 @@ connectionProperties = {
 }
 
 # Read CSV and writo to DB
-filenamesToUpdate = []
 for file in filenames:
     print("Processing file: " + file)
     df = spark.read.format("csv").options(header='true',inferschema='true',sep=";").load("wasbs://trafikkdatavictortest@svvpocdlgen2.blob.core.windows.net/" + file)
@@ -69,15 +68,10 @@ for file in filenames:
     
     # write to db
     df.write.jdbc(url=jdbcUrl, table="trafikkdataOpenshift", mode="append", properties=connectionProperties)
-    
-    filenamesToUpdate.append("processed_" + file)
-
-
-
-# Create files for processed files
-for file in filenamesToUpdate:
-    print("Will create new file: " + file)
+    #Create dummy file
     block_blob_service.create_blob_from_text('trafikkdatavictortest', file, 'dummy')
+    
+
 
 
 # Stop spark
