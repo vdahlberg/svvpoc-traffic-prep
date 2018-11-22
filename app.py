@@ -69,7 +69,7 @@ for file in filenames:
     # write to db
     df.write.jdbc(url=jdbcUrl, table="trafikkdataOpenshift", mode="append", properties=connectionProperties)
     #Create dummy file
-    block_blob_service.create_blob_from_text('trafikkdatavictortest', file, 'dummy')
+    block_blob_service.create_blob_from_text('trafikkdatavictortest', "processed_" + file, 'dummy')
     
 
 
