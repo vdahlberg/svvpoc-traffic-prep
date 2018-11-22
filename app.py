@@ -17,9 +17,14 @@ processed = []
 
 for blob in generator:
     if blob.name.startswith("processed_"):
-        processed.append( blob.name.replace("processed_", "") )
+        processed.append(blob.name.replace("processed_", ""))
     else:
         filenames.append(blob.name)
+
+# delete the files that has already been processed
+for p in processed:
+    if p in filenames:
+        filenames.remove(p)
 
 print("Already processed:")
 for name in processed:
@@ -29,12 +34,12 @@ print("Not processed:")
 for name in filenames:
     print(name)
 
-# delete the files that has already been processed
-for p in processed:
-    if p in filenames:
-        filenames.remove(p)
-
-
+# If there is nothing to process. Exit.
+import sys
+if not filenames:
+	print("Nothing new to process... Exiting....")
+	sys.exit()
+	
 # Create spark
 from pyspark.sql import SparkSession
 
