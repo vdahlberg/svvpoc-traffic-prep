@@ -3,15 +3,15 @@
 import os
 from os import environ
 
-storage_account_name = "svvpocdlgen2"
+storage_account_name = "svvpocdlg2"
 storage_account_access_key = environ.get("AZURE_STORAGE_ACCESS_KEY").strip()
-
+blob_cname = "trafikkdata"
 
 # Read all files in blob container
 from azure.storage.blob import BlockBlobService
 
 block_blob_service = BlockBlobService(account_name=storage_account_name, account_key=storage_account_access_key)
-generator = block_blob_service.list_blobs('trafikkdatavictortest')
+generator = block_blob_service.list_blobs(blob_cname)
 filenames = []
 processed = []
 
@@ -63,13 +63,13 @@ connectionProperties = {
 # Read CSV and writo to DB
 for file in filenames:
     print("Processing file: " + file)
-    df = spark.read.format("csv").options(header='true',inferschema='true',sep=";").load("wasbs://trafikkdatavictortest@svvpocdlgen2.blob.core.windows.net/" + file)
+    df = spark.read.format("csv").options(header='true',inferschema='true',sep=";").load("wasbs://" + blob_cname + "@" + storage_account_name + ".blob.core.windows.net/" + file)
     print(file + " has " + str(df.count()) + " rows.")
     
     # write to db
-    df.write.jdbc(url=jdbcUrl, table="trafikkdataOpenshift", mode="append", properties=connectionProperties)
+    df.write.jdbc(url=jdbcUrl, table=blob_cname, mode="append", properties=connectionProperties)
     #Create dummy file
-    block_blob_service.create_blob_from_text('trafikkdatavictortest', "processed_" + file, 'dummy')
+    block_blob_service.create_blob_from_text(blob_cname, "processed_" + file, 'dummy')
     
 
 
